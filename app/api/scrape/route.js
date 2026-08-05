@@ -1,15 +1,9 @@
-import { exec } from "node:child_process";
-import { promisify } from "node:util";
-
-const execAsync = promisify(exec);
+import { runScraper } from "../../../scripts/scrape.mjs";
 
 export async function POST() {
   try {
-    const { stdout, stderr } = await execAsync("node scripts/scrape.mjs", {
-      cwd: process.cwd(),
-      timeout: 120000,
-    });
-    return Response.json({ success: true, message: "Scrape job completed successfully", stdout, stderr });
+    const statusObj = await runScraper();
+    return Response.json({ success: true, message: "Live scrape completed successfully", status: statusObj });
   } catch (error) {
     return Response.json({ success: false, error: error.message }, { status: 500 });
   }

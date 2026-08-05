@@ -60,41 +60,41 @@ async function scrapeGitHub() {
         `https://api.github.com/search/repositories?q=${encodeURIComponent(q)}&sort=updated&per_page=25`,
         { headers }
       );
-      if (res.status === 401 && token) {
-        console.warn("  GitHub token invalid, retrying unauthenticated...");
+      if (!res.ok && token) {
         res = await fetchWithTimeout(
           `https://api.github.com/search/repositories?q=${encodeURIComponent(q)}&sort=updated&per_page=25`,
           { headers: { Accept: "application/vnd.github+json", "User-Agent": "The-Hunter-Archive/1.0" } }
         );
       }
+
       if (!res.ok) {
         console.error(`  failed: ${res.status}`);
         record(`GitHub: ${q}`, false, 0, `HTTP ${res.status}`);
         continue;
       }
-      const data = await res.json();
-      const rows = (data.items || []).filter((repo) => /writeup|walkthrough|ctf|pentest|bug.?bounty|security/i.test([repo.name, repo.description, ...(repo.topics || [])].filter(Boolean).join(" "))).map((repo) => ({
-        url: repo.html_url,
-        title: repo.full_name,
-        summary: clean(repo.description || ""),
+
+      const body = await res.json();
+      const rows = (body.items || []).map((repo) => ({
+        url: safeHttpUrl(repo.html_url),
+        title: `${repo.owner?.login}/${repo.name}`,
+        summary: clean(repo.description || "GitHub security writeups repository"),
         source: "github",
-        source_label: "github.com",
-        tags: repo.topics || [],
-        author: repo.owner?.login || "",
-        platform: repo.language || "github",
-        published_at: repo.pushed_at,
+        source_label: "GitHub Repos",
+        tags: (repo.topics || ["writeup"]).slice(0, 8),
+        author: repo.owner?.login || null,
+        platform: repo.language ? repo.language.toLowerCase() : "github",
+        published_at: repo.updated_at || repo.pushed_at,
       }));
-      await upsert(rows);
+      await upsert(rows.filter((r) => r.url));
       record(`GitHub: ${q}`, true, rows.length);
     } catch (err) {
       console.error(`  failed: ${err.message}`);
       record(`GitHub: ${q}`, false, 0, err.name === "AbortError" ? "timed out" : err.message);
     }
-    await new Promise((r) => setTimeout(r, 1500));
   }
 }
 
-// ---------- 3. Pentester Land's handpicked writeups directory ----------
+// ---------- 3. Pentester.land API ----------
 async function scrapePentesterLand() {
   try {
     console.log(`Pentester Land: ${PENTESTERLAND_API_URL}`);
@@ -144,13 +144,18 @@ async function scrapePentesterLand() {
   }
 }
 
-async function main() {
+export async function runScraper() {
+  sourceReport.length = 0;
   console.log("=== writeup-scraper run started:", new Date().toISOString(), "===");
   await scrapeRSS();
   await scrapeGitHub();
   await scrapePentesterLand();
-  await writeSourceStatus({ updatedAt: new Date().toISOString(), sources: sourceReport });
+  const statusObj = { updatedAt: new Date().toISOString(), sources: sourceReport };
+  await writeSourceStatus(statusObj);
   console.log("=== run complete ===");
+  return statusObj;
 }
 
-main().then(() => process.exit(0));
+if (process.argv[1] && process.argv[1].endsWith("scrape.mjs")) {
+  runScraper().then(() => process.exit(0));
+}
