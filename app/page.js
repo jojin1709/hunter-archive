@@ -301,12 +301,13 @@ export default function Page() {
     { label: "Export bookmarks (JSON)", action: () => exportBookmarks(), hint: "Export" },
     { label: `Toggle theme (${dark ? "Light" : "Dark"})`, action: () => setDark(!dark), hint: "Theme" },
   ].filter((cmd) => cmd.label.toLowerCase().includes(commandQuery.toLowerCase()));  const searchField = (
-    <label className="search-box">
-      <span>⌕</span>
+    <label className="search-bar">
+      <span className="search-icon">⌕</span>
       <input
         ref={searchRef}
-        aria-label="Search the archive"
-        placeholder="Search IDOR, JWT, SSRF, RCE, author, target..."
+        className="search-input"
+        aria-label="Search security writeups"
+        placeholder="Search vulnerability, technique, author, program (e.g., RCE, SSRF, Uber, OAuth)..."
         value={q}
         onChange={(event) => reset(() => setQ(event.target.value))}
       />
@@ -316,326 +317,235 @@ export default function Page() {
 
   return (
     <main>
-      <video className="bg-video" src="/prisma.mp4" autoPlay muted playsInline preload="auto" aria-hidden="true" />
-      <div className="scrim" />
-      <div className="vignette" />
+      <div className="app-bg-glow" />
 
-      <section className="hero" id="top">
-        <nav className="nav rise">
-          <a href="#archive">The archive</a>
-          <a href="#sources">Sources</a>
-          <a href="#archive">Walkthroughs</a>
-          <a href="#about">About</a>
-          <button className="nav-button" onClick={() => setDark(!dark)}>
-            {dark ? "Light" : "Dark"}
-          </button>
-        </nav>
-        <div className="hero-grid">
-          <div className="hero-copy">
-            <span className="eyebrow rise">For the curious · case archive</span>
-            <h1 className="rise">The Hunter Archive</h1>
+      {/* Top Navbar */}
+      <nav className="top-nav">
+        <div className="nav-container">
+          <div className="brand-logo">
+            <span>HUNTER ARCHIVE</span>
+            <span className="brand-badge">{total} WRITEUPS</span>
           </div>
-          <div className="hero-side rise">
-            <p>Bug bounty writeups, CTF walkthroughs, and security research — collected for the people who keep asking how.</p>
-            <div className="hero-actions">
-              <button className="cta" onClick={randomWriteup}>
-                Surprise me <span>↗</span>
-              </button>
-              <a className="cta" href="#search">
-                Explore the archive <span>↗</span>
-              </a>
-            </div>
-          </div>
-        </div>
-        <a className="scroll-cue rise" href="#about">
-          <span>↓</span> scroll to investigate
-        </a>
-      </section>
-
-      <section className="section intro reveal" id="about">
-        <div className="section-heading">
-          <span className="eyebrow">01 · What this is</span>
-          <h2>A place for the trail, not just the answer.</h2>
-          <p>One quiet index for the experiments, mistakes, and clever turns that make security worth studying.</p>
-        </div>
-        <div className="card-grid">
-          <article className="info-card">
-            <span>01</span>
-            <h3>Find the signal</h3>
-            <p>Search across writeups, reports, and walkthroughs from the people doing the work.</p>
-          </article>
-          <article className="info-card">
-            <span>02</span>
-            <h3>Follow the method</h3>
-            <p>Keep the context around each discovery — the dead ends are often the useful part.</p>
-          </article>
-          <article className="info-card">
-            <span>03</span>
-            <h3>Keep going deeper</h3>
-            <p>Bookmark useful trails, mark what you’ve read, and return when you need a new angle.</p>
-          </article>
-        </div>
-      </section>
-
-      <section className="discovery section reveal">
-        <div className="section-heading compact">
-          <span className="eyebrow">Fresh from the field</span>
-          <h2>Start somewhere interesting.</h2>
-        </div>
-        <div className="discovery-grid">
-          <div>
-            <small>Recently added</small>
-            {discover.recent.slice(0, 3).map((item) => (
-              <a key={item.id} href={`/writeups/${item.id}`}>
-                {item.title}
-              </a>
-            ))}
-          </div>
-          <div>
-            <small>Trending signals</small>
-            {discover.trending.slice(0, 3).map((item) => (
-              <a key={item.id} href={`/writeups/${item.id}`}>
-                {item.title}
-              </a>
-            ))}
-          </div>
-          <div>
-            <small>Vulnerability timeline</small>
-            <div className="timeline">
-              {discover.timeline.slice(0, 6).map((item) => (
-                <span key={item.month}>
-                  {item.month} <b>{item.count}</b>
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="quote-band reveal">
-        <p>“The best writeups leave you with a better question than the one you started with.”</p>
-      </section>
-
-      <section className="section archive-section reveal" id="search">
-        <div className="section-heading compact" id="sources">
-          <span className="eyebrow">02 · The archive</span>
-          <h2>Read the thinking.</h2>
-          <p>Search by vulnerability, technique, company, author, platform, or source.</p>
-        </div>
-
-        <div className="archive-tools">
-          <div className="view-tabs">
-            <button className={`tab-button ${viewTab === "all" ? "active" : ""}`} onClick={() => setViewTab("all")}>
-              All Entries ({total})
+          <div className="nav-actions">
+            <button className="btn-secondary" onClick={() => setShowCommand(true)}>
+              ⌘ K
             </button>
-            <button className={`tab-button ${viewTab === "bookmarks" ? "active" : ""}`} onClick={() => setViewTab("bookmarks")}>
-              ★ Bookmarks ({bookmarks.length})
+            <button className={`btn-secondary ${scraping ? "highlight" : ""}`} onClick={triggerScrape} disabled={scraping}>
+              {scraping ? "⚡ Scraping..." : "⚡ Live Scrape"}
             </button>
-            <button className={`tab-button ${viewTab === "unread" ? "active" : ""}`} onClick={() => setViewTab("unread")}>
-              Unread
+            <button className="btn-secondary" onClick={() => setDark(!dark)}>
+              {dark ? "☀ Light" : "🌙 Dark"}
             </button>
           </div>
+        </div>
+      </nav>
 
-          <div className="controls">
+      <div className="app-container">
+        {/* Search-First Hero Header */}
+        <section className="hero-banner">
+          <div className="hero-pill">⚡ Security Intelligence Archive</div>
+          <h1>Read the Thinking.</h1>
+          <p>Search over 7,490+ bug bounty writeups, CTF walkthroughs, and vulnerability reports from top researchers.</p>
+
+          <div className="search-wrapper">
             {searchField}
+          </div>
 
-            <div className="vuln-chips">
-              <span className="vuln-label">Quick Vuln:</span>
-              {QUICK_VULNS.map((vuln) => (
-                <button
-                  key={vuln}
-                  className={`vuln-chip ${q.toLowerCase() === vuln.toLowerCase() ? "active" : ""}`}
-                  onClick={() => reset(() => setQ(q.toLowerCase() === vuln.toLowerCase() ? "" : vuln))}
-                >
-                  {vuln}
-                </button>
-              ))}
+          <div className="vuln-bar">
+            {QUICK_VULNS.map((vuln) => (
+              <button
+                key={vuln}
+                className={`vuln-tag ${q.toLowerCase() === vuln.toLowerCase() ? "active" : ""}`}
+                onClick={() => reset(() => setQ(q.toLowerCase() === vuln.toLowerCase() ? "" : vuln))}
+              >
+                {vuln}
+              </button>
+            ))}
+          </div>
+        </section>
+
+        {/* Toolbar & Filters */}
+        <section className="toolbar">
+          <div className="toolbar-top">
+            <div className="tab-group">
+              <button className={`tab-btn ${viewTab === "all" ? "active" : ""}`} onClick={() => setViewTab("all")}>
+                All Writeups ({total})
+              </button>
+              <button className={`tab-btn ${viewTab === "bookmarks" ? "active" : ""}`} onClick={() => setViewTab("bookmarks")}>
+                ★ Bookmarks ({bookmarks.length})
+              </button>
+              <button className={`tab-btn ${viewTab === "unread" ? "active" : ""}`} onClick={() => setViewTab("unread")}>
+                Unread
+              </button>
             </div>
 
-            <div className="filters">
+            <div className="source-group">
               {SOURCES.map((item) => (
                 <button
                   key={item.id}
-                  className={`filter-chip ${source === item.id ? "active" : ""}`}
+                  className={`source-btn ${source === item.id ? "active" : ""}`}
                   onClick={() => reset(() => setSource(item.id))}
                 >
                   {item.label}
                 </button>
               ))}
-
-              <select className="sort-select" value={sort} onChange={(e) => reset(() => setSort(e.target.value))}>
-                <option value="relevance">Sort: Most Relevant</option>
-                <option value="newest">Sort: Newest First</option>
-                <option value="oldest">Sort: Oldest First</option>
-                <option value="bounty">Sort: Highest Bounty 💰</option>
-              </select>
             </div>
+
+            <select className="sort-select" value={sort} onChange={(e) => reset(() => setSort(e.target.value))}>
+              <option value="relevance">Sort: Most Relevant</option>
+              <option value="newest">Sort: Newest First</option>
+              <option value="oldest">Sort: Oldest First</option>
+              <option value="bounty">Sort: Highest Bounty 💰</option>
+            </select>
           </div>
 
           <div className="tool-row">
-            <button className="tool-btn" onClick={() => setShowCommand(true)}>
+            <button className="btn-secondary" onClick={() => setShowCommand(true)}>
               ⌘ Command Palette
             </button>
-            <button className={`tool-btn ${scraping ? "highlight" : ""}`} onClick={triggerScrape} disabled={scraping}>
-              {scraping ? "⚡ Scraping..." : "⚡ Live Scrape"}
-            </button>
-            <button className="tool-btn" onClick={loadStatus}>
+            <button className="btn-secondary" onClick={loadStatus}>
               ◌ Source Health
             </button>
-            <button className="tool-btn" onClick={() => setShowAdvanced(!showAdvanced)}>
+            <button className="btn-secondary" onClick={() => setShowAdvanced(!showAdvanced)}>
               ⚙ Advanced Filters
             </button>
-            <button className="tool-btn" onClick={() => setShowRequest(true)}>
-              ＋ Request Feed
+            <button className="btn-secondary" onClick={() => setShowRequest(true)}>
+              ＋ Request Source
             </button>
-            <button className="tool-btn" onClick={loadRequests}>
+            <button className="btn-secondary" onClick={loadRequests}>
               📋 View Requests
             </button>
-            <button className="tool-btn" onClick={() => setShowSources(!showSources)}>
+            <button className="btn-secondary" onClick={() => setShowSources(!showSources)}>
               ⓘ Source Notes
             </button>
-            <a className="tool-btn" href="/api/export?format=json">
+            <a className="btn-secondary" href="/api/export?format=json">
               ↓ Export JSON
             </a>
-            <a className="tool-btn" href="/api/export?format=csv">
+            <a className="btn-secondary" href="/api/export?format=csv">
               ↓ Export CSV
             </a>
-            <label className="tool-btn">
+            <label className="btn-secondary">
               ↑ Import JSON
               <input type="file" accept="application/json" onChange={importArchive} hidden />
             </label>
           </div>
-        </div>
 
-        {showAdvanced && (
-          <div className="advanced-filters">
-            <input placeholder="Tag: ssrf" value={filters.tag} onChange={(e) => reset(() => setFilters({ ...filters, tag: e.target.value }))} />
-            <input placeholder="Author" value={filters.author} onChange={(e) => reset(() => setFilters({ ...filters, author: e.target.value }))} />
-            <input placeholder="Platform: web" value={filters.platform} onChange={(e) => reset(() => setFilters({ ...filters, platform: e.target.value }))} />
-            <input type="date" value={filters.from} onChange={(e) => reset(() => setFilters({ ...filters, from: e.target.value }))} />
-            <input type="date" value={filters.to} onChange={(e) => reset(() => setFilters({ ...filters, to: e.target.value }))} />
-          </div>
-        )}
-
-        {showSources && (
-          <div className="status-panel">
-            <strong>Source notes</strong>
-            <p>Feeds are pulled directly from public RSS, GitHub Search API, and Pentester.land writeups index. Original author links and attribution are preserved.</p>
-            <button className="text-button" onClick={() => setShowRequest(true)}>
-              Suggest another public feed →
-            </button>
-          </div>
-        )}
-
-        {showStatus && (
-          <div className="status-panel">
-            <div>
-              <strong>Source health</strong>
-              <button className="close-button" onClick={() => setShowStatus(false)}>
-                ×
-              </button>
+          {showAdvanced && (
+            <div className="advanced-panel">
+              <input placeholder="Filter tag (e.g. ssrf)" value={filters.tag} onChange={(e) => reset(() => setFilters({ ...filters, tag: e.target.value }))} />
+              <input placeholder="Author name" value={filters.author} onChange={(e) => reset(() => setFilters({ ...filters, author: e.target.value }))} />
+              <input placeholder="Platform (e.g. web)" value={filters.platform} onChange={(e) => reset(() => setFilters({ ...filters, platform: e.target.value }))} />
+              <input type="date" value={filters.from} onChange={(e) => reset(() => setFilters({ ...filters, from: e.target.value }))} />
+              <input type="date" value={filters.to} onChange={(e) => reset(() => setFilters({ ...filters, to: e.target.value }))} />
             </div>
-            <small>Last run: {status?.updatedAt ? new Date(status.updatedAt).toLocaleString() : "not yet recorded"}</small>
-            {(status?.sources || []).map((item) => (
-              <div className="source-status" key={item.label}>
-                <span className={`health-dot ${item.ok ? "good" : "bad"}`} />
-                {item.label}
-                <span>{item.ok ? `${item.count} items` : item.error}</span>
-              </div>
-            ))}
-          </div>
-        )}
+          )}
 
-        <p className="status-line">
-          {loading && page === 1
-            ? "searching the archive..."
-            : error
-            ? `error: ${error}`
-            : `${total} entries found · ${bookmarks.length} saved · ${read.length} read`}
-        </p>
+          {showSources && (
+            <div className="advanced-panel">
+              <div>
+                <strong>Source notes:</strong> Feeds are pulled directly from public RSS, GitHub Search API, and Pentester.land writeups index.
+              </div>
+            </div>
+          )}
+
+          {showStatus && (
+            <div className="advanced-panel">
+              <div>
+                <strong>Source health status:</strong>
+                {(status?.sources || []).map((item) => (
+                  <div key={item.label} style={{ fontSize: 11, marginTop: 4 }}>
+                    • {item.label}: {item.ok ? `${item.count} items` : item.error}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </section>
+
+        <div className="feed-status">
+          <span>
+            {loading && page === 1
+              ? "Searching archive..."
+              : error
+              ? `Error: ${error}`
+              : `Showing ${filteredResults.length} of ${total} entries · ${bookmarks.length} saved`}
+          </span>
+        </div>
 
         {!loading && !error && filteredResults.length === 0 && (
           <div className="empty-state">
-            <span>no match found</span>
-            <p>Try a broader search term, clear active filters, or click "Run Live Scrape" to refresh the archive.</p>
+            <span>No matching writeups found</span>
+            <p>Try a different keyword or clear active filters.</p>
           </div>
         )}
 
-        <div className="case-list">
-          {filteredResults.map((item, index) => {
+        {/* Clean Writeups Feed */}
+        <section className="writeup-feed">
+          {filteredResults.map((item) => {
             const isSaved = bookmarks.some((saved) => (typeof saved === "string" ? saved === item.id : saved.id === item.id));
             const isRead = read.some((r) => (typeof r === "string" ? r === item.id : r.id === item.id));
 
             return (
-              <article className={`case-card ${isRead ? "is-read" : ""}`} key={item.id || item.url}>
-                <span className="case-number">No. {String(index + 1).padStart(4, "0")}</span>
-                <div className="case-meta">
-                  <span className="source-tag">{item.source_label || item.source}</span>
-                  <span>{formatDate(item.published_at)}</span>
-                  {item.author && <span>{item.author}</span>}
-                  {item.bounty && <span className="bounty-badge">💰 {item.bounty}</span>}
-                  {isRead && <span>read</span>}
+              <article className={`card-item ${isRead ? "is-read" : ""}`} key={item.id || item.url}>
+                <div className="card-header">
+                  <span className="card-source">{item.source_label || item.source}</span>
+                  <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                    <span>{formatDate(item.published_at)}</span>
+                    {item.author && <span>by {item.author}</span>}
+                    {item.bounty && <span className="bounty-pill">💰 {item.bounty}</span>}
+                  </div>
                 </div>
-                <a className="case-link" href={`/writeups/${item.id}`} onClick={() => toggle(item, read, setRead, "hunter-archive-read")}>
-                  <h3>{highlight(item.title, q)}</h3>
-                </a>
-                {item.summary && <p>{highlight(item.summary, q)}</p>}
-                <div className="case-footer">
-                  <div className="case-tags">
-                    {(item.tags || []).slice(0, 6).map((tag) => (
-                      <span key={tag}>{highlight(tag, q)}</span>
+
+                <h3 className="card-title">
+                  <a href={`/writeups/${item.id}`} onClick={() => toggle(item, read, setRead, "hunter-archive-read")}>
+                    {highlight(item.title, q)}
+                  </a>
+                </h3>
+
+                {item.summary && <p className="card-summary">{highlight(item.summary, q)}</p>}
+
+                {item.tags && item.tags.length > 0 && (
+                  <div className="card-tags">
+                    {item.tags.slice(0, 6).map((tag) => (
+                      <span className="tag-badge" key={tag}>
+                        {highlight(tag, q)}
+                      </span>
                     ))}
                   </div>
-                  <button className={`bookmark-button ${isSaved ? "saved" : ""}`} onClick={() => toggle(item, bookmarks, setBookmarks, "hunter-archive-bookmarks")}>
-                    {isSaved ? "★ Saved" : "☆ Save"}
-                  </button>
-                  <button className="read-link" onClick={() => copyLink(item)}>
-                    Copy link
-                  </button>
-                  <a className="read-link" href={item.url} target="_blank" rel="noopener noreferrer">
-                    Original ↗
+                )}
+
+                <div className="card-footer">
+                  <div className="card-actions">
+                    <button className={`action-link ${isSaved ? "saved" : ""}`} onClick={() => toggle(item, bookmarks, setBookmarks, "hunter-archive-bookmarks")}>
+                      {isSaved ? "★ Saved" : "☆ Save"}
+                    </button>
+                    <button className="action-link" onClick={() => copyLink(item)}>
+                      Copy citation
+                    </button>
+                  </div>
+                  <a className="read-more-link" href={item.url} target="_blank" rel="noopener noreferrer">
+                    View Original ↗
                   </a>
                 </div>
               </article>
             );
           })}
-        </div>
+        </section>
 
         {hasMore && (
-          <button className="load-more" onClick={() => setPage((current) => current + 1)} disabled={loading}>
-            {loading ? "Loading..." : "Load more writeups"}
+          <button className="load-more-btn" onClick={() => setPage((current) => current + 1)} disabled={loading}>
+            {loading ? "Loading..." : "Load More Writeups"}
           </button>
         )}
-
-        <div className="archive-footer-actions">
-          <button className="text-button" onClick={exportBookmarks}>
-            ↓ Export bookmarks
-          </button>
-          <button className="text-button" onClick={() => setShowRequest(true)}>
-            Suggest a public source
-          </button>
-        </div>
-      </section>
-
-      <section className="closing reveal">
-        <span className="eyebrow">03 · Keep looking</span>
-        <h2>Stay curious.</h2>
-        <p>The archive grows every time someone shares how they got there.</p>
-        <a className="cta" href="#search">
-          Return to the archive <span>↗</span>
-        </a>
-      </section>
+      </div>
 
       <footer>
-        <span>The Hunter Archive</span>
-        <small>
-          Built for the curious · <a href="#top">Back to top ↑</a> · <a href="/manifest.webmanifest">Install app</a>
-        </small>
+        <p>The Hunter Archive — Built for Security Researchers</p>
       </footer>
 
       {showCommand && (
         <div className="modal-backdrop" onClick={() => setShowCommand(false)}>
-          <div className="command-palette" onClick={(event) => event.stopPropagation()}>
+          <div className="command-modal" onClick={(event) => event.stopPropagation()}>
             <input
               autoFocus
               placeholder="Search command palette..."
@@ -645,6 +555,7 @@ export default function Page() {
             {commandActions.map((cmd) => (
               <button
                 key={cmd.label}
+                className="command-option"
                 onClick={() => {
                   setShowCommand(false);
                   cmd.action();
@@ -660,43 +571,48 @@ export default function Page() {
 
       {showRequest && (
         <div className="modal-backdrop" onClick={() => setShowRequest(false)}>
-          <form className="request-form" onSubmit={submitSource} onClick={(event) => event.stopPropagation()}>
-            <button type="button" className="close-button" onClick={() => setShowRequest(false)}>
-              ×
-            </button>
-            <span className="eyebrow">Suggest a public source</span>
-            <h3>What should we follow next?</h3>
-            <input name="url" type="url" required placeholder="https://example.com/feed.xml" />
-            <textarea name="note" placeholder="Why is this feed useful?" />
-            <button className="cta" type="submit">
-              Submit request <span>↗</span>
+          <form className="request-modal" onSubmit={submitRequest}>
+            <h3>Suggest a Source</h3>
+            <p style={{ color: "var(--text-secondary)", fontSize: 13 }}>Enter a security blog, RSS feed, or GitHub repo URL to ingest writeups from.</p>
+            <input
+              required
+              type="url"
+              placeholder="https://example.com/rss.xml"
+              value={requestForm.url}
+              onChange={(e) => setRequestForm({ ...requestForm, url: e.target.value })}
+            />
+            <textarea
+              placeholder="Optional notes about this source..."
+              value={requestForm.notes}
+              onChange={(e) => setRequestForm({ ...requestForm, notes: e.target.value })}
+            />
+            <button className="load-more-btn" type="submit" style={{ margin: 0, width: "100%" }}>
+              Submit Source
             </button>
           </form>
         </div>
       )}
-
       {showRequestsList && (
         <div className="modal-backdrop" onClick={() => setShowRequestsList(false)}>
-          <div className="request-form" onClick={(event) => event.stopPropagation()}>
-            <button type="button" className="close-button" onClick={() => setShowRequestsList(false)}>
-              ×
-            </button>
-            <span className="eyebrow">Submitted Sources</span>
-            <h3>Community Requested Feeds</h3>
-            <div style={{ maxHeight: "300px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "10px" }}>
+          <div className="command-modal" onClick={(event) => event.stopPropagation()}>
+            <h3>Submitted Source Requests</h3>
+            <div style={{ maxHeight: "300px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "10px", marginTop: 10 }}>
               {sourceRequests.length === 0 ? (
-                <p style={{ color: "var(--dim)" }}>No source requests submitted yet.</p>
+                <p style={{ color: "var(--text-muted)", fontSize: 13 }}>No source requests submitted yet.</p>
               ) : (
                 sourceRequests.map((req, i) => (
-                  <div key={i} style={{ borderBottom: "1px solid var(--line)", paddingBottom: "8px" }}>
-                    <a href={req.url} target="_blank" rel="noreferrer" style={{ color: "var(--cream)", fontWeight: 500 }}>
+                  <div key={i} style={{ borderBottom: "1px solid var(--border)", paddingBottom: 8 }}>
+                    <a href={req.url} target="_blank" rel="noreferrer" style={{ color: "var(--accent-indigo)", fontWeight: 500 }}>
                       {req.url}
                     </a>
-                    {req.note && <p style={{ margin: "4px 0 0", color: "var(--soft)", fontSize: "12px" }}>{req.note}</p>}
+                    {req.note && <p style={{ margin: "4px 0 0", color: "var(--text-secondary)", fontSize: "12px" }}>{req.note}</p>}
                   </div>
                 ))
               )}
             </div>
+            <button className="btn-secondary" style={{ marginTop: 12 }} onClick={() => setShowRequestsList(false)}>
+              Close
+            </button>
           </div>
         </div>
       )}
