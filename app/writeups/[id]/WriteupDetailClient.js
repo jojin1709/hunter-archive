@@ -65,6 +65,7 @@ export default function WriteupDetailClient({ item, related = [] }) {
   const [saved, setSaved] = useState(false);
   const [read, setRead] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [copiedFull, setCopiedFull] = useState(false);
   const [upvotes, setUpvotes] = useState(0);
   const [hasUpvoted, setHasUpvoted] = useState(false);
 
@@ -79,7 +80,7 @@ export default function WriteupDetailClient({ item, related = [] }) {
       setSaved(bookmarks.some((b) => (typeof b === "string" ? b === item.id : b.id === item.id)));
       setRead(readList.some((r) => (typeof r === "string" ? r === item.id : r.id === item.id)));
       setHasUpvoted(!!upvoteMap[item.id]);
-      setUpvotes((upvoteMap[item.id] || 0) + 12); // Base community signals
+      setUpvotes((upvoteMap[item.id] || 0) + 12);
     } catch {}
   }, [item.id]);
 
@@ -132,6 +133,24 @@ export default function WriteupDetailClient({ item, related = [] }) {
     await navigator.clipboard.writeText(markdown);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const copyFullWriteup = async () => {
+    const fullText = `# ${item.title}\n\n` +
+      `**Source:** ${item.source_label || item.source} | **Author:** ${item.author || "Security Researcher"}\n` +
+      `**Date:** ${item.published_at || "Undated"} ${item.bounty ? `| **Bounty:** ${item.bounty}` : ""}\n` +
+      `**Link:** ${item.url}\n\n` +
+      `## Summary & Details\n${item.summary || "Security vulnerability analysis report."}\n\n` +
+      `## 🤖 Technical Attack Breakdown\n` +
+      `- **Vulnerability Chain:** ${breakdown.vulnType}\n` +
+      `- **Tools Used:** ${breakdown.tools.join(", ")}\n` +
+      `- **Payload:** ${breakdown.payload}\n` +
+      `- **Remediation Fix:** ${breakdown.fix}\n\n` +
+      `---\n*Collected from The Hunter Archive — Developed by JOJIN JOHN*`;
+
+    await navigator.clipboard.writeText(fullText);
+    setCopiedFull(true);
+    setTimeout(() => setCopiedFull(false), 2000);
   };
 
   const copyNucleiPoC = async () => {
@@ -188,6 +207,9 @@ export default function WriteupDetailClient({ item, related = [] }) {
             <button className="btn-secondary" onClick={toggleRead}>
               {read ? "✓ Marked as Read" : "○ Mark as Read"}
             </button>
+            <button className="btn-secondary" onClick={copyFullWriteup}>
+              {copiedFull ? "✓ Full Writeup Copied!" : "📋 Copy Full Writeup"}
+            </button>
             <button className="btn-secondary" onClick={copyCitation}>
               {copied ? "✓ Citation Copied!" : "📋 Copy Citation"}
             </button>
@@ -201,10 +223,23 @@ export default function WriteupDetailClient({ item, related = [] }) {
             )}
           </div>
 
-          {item.summary && <div className="detail-summary">{item.summary}</div>}
+          {/* Full Report Details Card */}
+          <div className="advanced-panel" style={{ marginTop: 8, padding: 22, background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: 12 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+              <h3 style={{ margin: 0, fontSize: 16, color: "var(--text-primary)", fontWeight: 700 }}>
+                📄 Complete Vulnerability Report &amp; Overview
+              </h3>
+              <button className="btn-secondary" style={{ fontSize: 12, padding: "5px 12px" }} onClick={copyFullWriteup}>
+                {copiedFull ? "✓ Copied!" : "📋 Copy Text"}
+              </button>
+            </div>
+            <div style={{ color: "var(--text-secondary)", fontSize: 14, lineHeight: 1.7, whiteSpace: "pre-wrap" }}>
+              {item.summary || "Full technical summary and report analysis."}
+            </div>
+          </div>
 
           {/* 🤖 AI Vulnerability Breakdown & Attack Chain */}
-          <div className="advanced-panel" style={{ marginTop: 24, padding: 20, display: "flex", flexDirection: "column", gap: 14 }}>
+          <div className="advanced-panel" style={{ marginTop: 20, padding: 20, display: "flex", flexDirection: "column", gap: 14 }}>
             <div style={{ display: "flex", alignItems: "center", justifyBetween: "space-between", gap: 10 }}>
               <span className="hero-pill" style={{ margin: 0 }}>🤖 AI Technical Attack Breakdown</span>
             </div>
