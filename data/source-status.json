@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-05T16:24:54.114Z",
+  "updatedAt": "2026-08-05T17:50:49.520Z",
   "sources": [
     {
       "label": "infosecwriteups.com",
@@ -130,25 +130,25 @@
     {
       "label": "GitHub: bug bounty writeup in:name,description,readme",
       "ok": true,
-      "count": 15,
+      "count": 25,
       "error": null
     },
     {
       "label": "GitHub: ctf walkthrough in:name,description,readme",
       "ok": true,
-      "count": 10,
+      "count": 25,
       "error": null
     },
     {
       "label": "GitHub: penetration testing report in:name,description,readme",
       "ok": true,
-      "count": 6,
+      "count": 25,
       "error": null
     },
     {
       "label": "GitHub: awesome bug bounty in:name,description,readme",
       "ok": true,
-      "count": 8,
+      "count": 25,
       "error": null
     },
     {
