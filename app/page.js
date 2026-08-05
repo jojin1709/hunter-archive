@@ -217,8 +217,11 @@ export default function Page() {
       const res = await fetch("/api/scrape", { method: "POST" });
       const data = await res.json();
       if (data.success) {
-        alert("Scrape completed successfully!");
-        window.location.reload();
+        const searchRes = await fetch(`/api/search?${queryString}`);
+        const searchData = await searchRes.json();
+        setResults(searchData.items || []);
+        setTotal(searchData.total || 0);
+        alert(`Scrape completed! Total writeups in archive updated to ${searchData.total}`);
       } else {
         alert(`Scrape error: ${data.error}`);
       }
@@ -345,7 +348,7 @@ export default function Page() {
         <section className="hero-banner">
           <div className="hero-pill">⚡ Security Intelligence Archive</div>
           <h1>Read the Thinking.</h1>
-          <p>Search over 7,490+ bug bounty writeups, CTF walkthroughs, and vulnerability reports from top researchers.</p>
+          <p>Search over {total ? total.toLocaleString() : "7,490"}+ bug bounty writeups, CTF walkthroughs, and vulnerability reports from top researchers.</p>
 
           <div className="search-wrapper">
             {searchField}
