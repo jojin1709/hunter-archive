@@ -146,6 +146,18 @@ export default function Page() {
   }, [dark]);
 
   useEffect(() => {
+    // Non-blocking automatic background scrape on initial visit / page refresh
+    fetch("/api/scrape", { method: "POST" })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.status?.totalCount) {
+          setTotalWriteups(data.status.totalCount);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
     let cancelled = false;
     const timer = setTimeout(async () => {
       setLoading(true);
