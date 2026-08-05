@@ -53,7 +53,7 @@ export default function WriteupDetailClient({ item, related = [] }) {
       if (saved) {
         next = bookmarks.filter((b) => (typeof b === "string" ? b !== item.id : b.id !== item.id));
       } else {
-        next = [...bookmarks, { id: item.id, title: item.title, url: item.url }];
+        next = [...bookmarks, item];
       }
       localStorage.setItem("hunter-archive-bookmarks", JSON.stringify(next));
       setSaved(!saved);

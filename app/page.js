@@ -191,13 +191,25 @@ export default function Page() {
   }, []);
 
   const filteredResults = useMemo(() => {
-    let items = results;
     if (viewTab === "bookmarks") {
-      items = items.filter((item) => bookmarks.some((b) => (typeof b === "string" ? b === item.id : b.id === item.id)));
-    } else if (viewTab === "unread") {
-      items = items.filter((item) => !read.some((r) => (typeof r === "string" ? r === item.id : r.id === item.id)));
+      const matchedFromResults = results.filter((item) =>
+        bookmarks.some((b) => (typeof b === "string" ? b === item.id : b.id === item.id))
+      );
+      const fullBookmarks = bookmarks
+        .map((b) => {
+          if (typeof b === "object" && b !== null && b.title && b.url) return b;
+          return matchedFromResults.find((item) => item.id === (typeof b === "string" ? b : b.id));
+        })
+        .filter(Boolean);
+
+      return fullBookmarks.length > 0 ? fullBookmarks : matchedFromResults;
     }
-    return items;
+
+    if (viewTab === "unread") {
+      return results.filter((item) => !read.some((r) => (typeof r === "string" ? r === item.id : r.id === item.id)));
+    }
+
+    return results;
   }, [results, viewTab, bookmarks, read]);
 
   // Featured Case of the Day (Select first high-bounty / high-signal writeup)
@@ -212,7 +224,7 @@ export default function Page() {
       if (isSaved) {
         next = bookmarks.filter((b) => (typeof b === "string" ? b !== item.id : b.id !== item.id));
       } else {
-        next = [...bookmarks, { id: item.id, title: item.title, url: item.url }];
+        next = [...bookmarks, item];
       }
       localStorage.setItem("hunter-archive-bookmarks", JSON.stringify(next));
       setBookmarks(next);
