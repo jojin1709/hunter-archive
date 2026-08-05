@@ -155,7 +155,8 @@ export default function Page() {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data = await response.json();
         if (cancelled) return;
-        setResults((prev) => (page === 1 ? data.items || [] : [...prev, ...(data.items || [])]));
+        const newItems = data.items || data.results || [];
+        setResults((prev) => (page === 1 ? newItems : [...prev, ...newItems]));
         setTotal(data.total || 0);
         setHasMore(data.hasMore || false);
       } catch (err) {

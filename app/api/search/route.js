@@ -57,5 +57,5 @@ export async function GET(request) {
   const total = results.length;
   const start = (page - 1) * pageSize;
 
-  return Response.json({ results: results.slice(start, start + pageSize).map(({ _score, ...row }) => row), total, page, pageSize, hasMore: start + pageSize < total });
+  return Response.json({ items: results.slice(start, start + pageSize).map(({ _score, ...row }) => row), results: results.slice(start, start + pageSize).map(({ _score, ...row }) => row), total, page, pageSize, hasMore: start + pageSize < total });
 }
