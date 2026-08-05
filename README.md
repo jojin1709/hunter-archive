@@ -9,7 +9,7 @@
 
 Searchable, high-density security research hub indexing 7,490+ writeups, vulnerability reports, and CTF walkthroughs from top security researchers and platforms.
 
-**Collected for the people who keep asking how.**
+**Developed by JOJIN JOHN**
 
 ---
 
@@ -20,26 +20,36 @@ Searchable, high-density security research hub indexing 7,490+ writeups, vulnera
 </div>
 
 > [!TIP]
-> **Quick Start:** Search across 7,490+ indexed reports instantly by vulnerability (`RCE`, `SSRF`, `IDOR`, `XSS`, `OAuth`), target program (`Uber`, `Google`, `Meta`), or researcher name.
+> **Quick Access:** Open [hunter-archive.vercel.app](https://hunter-archive.vercel.app/) to search across 7,490+ indexed reports instantly by vulnerability (`RCE`, `SSRF`, `IDOR`, `XSS`, `OAuth`), target program (`Uber`, `Google`, `Meta`), or researcher name.
 
 ## Table of Contents
 
 - [What is The Hunter Archive?](#what-is-the-hunter-archive)
+- [Access the Live Application](#access-the-live-application)
 - [Key Features](#key-features)
 - [Architecture & Data Pipeline](#architecture--data-pipeline)
-- [Quick Start & Local Setup](#quick-start--local-setup)
 - [Sources & Feed Coverage](#sources--feed-coverage)
 - [Automated Scraping (GitHub Actions)](#automated-scraping-github-actions)
 - [Deployment on Vercel](#deployment-on-vercel)
-- [License & Open Source](#license--open-source)
+- [License & Developer](#license--developer)
 
 ---
 
 ## What is The Hunter Archive?
 
-**The Hunter Archive** is a high-speed, searchable security research platform developed for bug bounty hunters, penetration testers, and security engineers. It continuous ingests, categorizes, and indexes public security writeups, vulnerability disclosures, and CTF walkthroughs from across the web.
+**The Hunter Archive** is a high-speed, searchable security research platform developed for bug bounty hunters, penetration testers, and security engineers. It continuously ingests, categorizes, and indexes public security writeups, vulnerability disclosures, and CTF walkthroughs from across the web.
 
 Instead of hunting through scattered RSS feeds, Medium blogs, and GitHub repositories, **The Hunter Archive** provides a single unified search engine with 1-click vulnerability filters, bounty badges (`💰 $5,000`), offline bookmarks, and automated markdown citations.
+
+---
+
+## Access the Live Application
+
+**The Hunter Archive** is deployed live and ready to use directly in your browser:
+
+👉 **[https://hunter-archive.vercel.app/](https://hunter-archive.vercel.app/)**
+
+No installation, cloning, or local setup required! Simply open the link to search, bookmark, and explore 7,490+ security writeups.
 
 ---
 
@@ -86,44 +96,7 @@ Instead of hunting through scattered RSS feeds, Medium blogs, and GitHub reposit
                                      ▼
         ┌──────────────────────────────────────────────────────────┐
         │             Next.js 14 Responsive UI & API               │
-        └──────────────────────────────────────────────────────────┘
-```
-
----
-
-## Quick Start & Local Setup
-
-### Prerequisites
-
-- **Node.js 18+**
-- **npm** or **pnpm**
-
-### 1. Clone & Install
-
-```bash
-git clone https://github.com/jojin1709/hunter-archive.git
-cd hunter-archive
-npm install
-```
-
-### 2. Configure Environment (Optional)
-
-```bash
-cp .env.example .env.local
-# GITHUB_TOKEN is optional but recommended to raise GitHub API rate limits
-```
-
-### 3. Run the Scraper (Populate Writeups)
-
-```bash
-npm run scrape
-```
-
-### 4. Launch Local Dev Server
-
-```bash
-npm run dev
-# Open http://localhost:3000 in your browser
+        └────────────────────────────┬─────────────────────────────┘
 ```
 
 ---
@@ -163,10 +136,10 @@ The scraper runs as an automated GitHub Action (`.github/workflows/scrape.yml`) 
 
 ---
 
-## License & Open Source
+## License & Developer
 
 Licensed under the **MIT License**. Free for personal and commercial use.
 
 <p align="center">
-  <b>Built for Security Researchers & Bug Bounty Hunters</b>
+  <b>Developed by JOJIN JOHN</b>
 </p>

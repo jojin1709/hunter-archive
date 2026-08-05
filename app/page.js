@@ -543,7 +543,7 @@ export default function Page() {
       </div>
 
       <footer>
-        <p>The Hunter Archive — Built for Security Researchers</p>
+        <p>The Hunter Archive — Developed by <strong>JOJIN JOHN</strong></p>
       </footer>
 
       {showCommand && (

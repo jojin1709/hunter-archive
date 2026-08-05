@@ -134,7 +134,7 @@ export default function WriteupDetailClient({ item, related = [] }) {
       </div>
 
       <footer>
-        <p>The Hunter Archive — Built for Security Researchers</p>
+        <p>The Hunter Archive — Developed by <strong>JOJIN JOHN</strong></p>
       </footer>
     </main>
   );
