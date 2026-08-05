@@ -194,7 +194,7 @@ export default function Page() {
     if (viewTab === "bookmarks") {
       items = items.filter((item) => bookmarks.some((b) => (typeof b === "string" ? b === item.id : b.id === item.id)));
     } else if (viewTab === "unread") {
-      items = items.filter((item) => !read.some((r) => (typeof r === "string" ? r !== item.id : r.id !== item.id)));
+      items = items.filter((item) => !read.some((r) => (typeof r === "string" ? r === item.id : r.id === item.id)));
     }
     return items;
   }, [results, viewTab, bookmarks, read]);
