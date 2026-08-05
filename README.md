@@ -1,75 +1,172 @@
-# The Hunter Archive — writeup archive
+> [!NOTE]
+> **[The Hunter Archive is officially live on Vercel](https://hunter-archive.vercel.app/)**
 
-A searchable dashboard that aggregates bug bounty writeups, CTF walkthroughs,
-and security tool READMEs from Medium, GitHub, and Pentester Land. Data is
-stored locally in `data/writeups.json`, so no database account is required.
+<div align="center">
 
-## 1. Configure environment variables
+# ⚡ The Hunter Archive
+
+### Searchable Security Intelligence, Bug Bounty Writeups & CTF Walkthroughs
+
+Searchable, high-density security research hub indexing 7,490+ writeups, vulnerability reports, and CTF walkthroughs from top security researchers and platforms.
+
+**Collected for the people who keep asking how.**
+
+---
+
+<a href="https://hunter-archive.vercel.app/"><img src="https://img.shields.io/badge/Live_App-hunter--archive.vercel.app-6366f1?style=for-the-badge&logo=vercel" height="40" alt="Visit Live App"></a>
+<a href="https://github.com/jojin1709/hunter-archive"><img src="https://img.shields.io/badge/GitHub-jojin1709%2Fhunter--archive-10b981?style=for-the-badge&logo=github" height="40" alt="GitHub Repository"></a>
+
+---
+</div>
+
+> [!TIP]
+> **Quick Start:** Search across 7,490+ indexed reports instantly by vulnerability (`RCE`, `SSRF`, `IDOR`, `XSS`, `OAuth`), target program (`Uber`, `Google`, `Meta`), or researcher name.
+
+## Table of Contents
+
+- [What is The Hunter Archive?](#what-is-the-hunter-archive)
+- [Key Features](#key-features)
+- [Architecture & Data Pipeline](#architecture--data-pipeline)
+- [Quick Start & Local Setup](#quick-start--local-setup)
+- [Sources & Feed Coverage](#sources--feed-coverage)
+- [Automated Scraping (GitHub Actions)](#automated-scraping-github-actions)
+- [Deployment on Vercel](#deployment-on-vercel)
+- [License & Open Source](#license--open-source)
+
+---
+
+## What is The Hunter Archive?
+
+**The Hunter Archive** is a high-speed, searchable security research platform developed for bug bounty hunters, penetration testers, and security engineers. It continuous ingests, categorizes, and indexes public security writeups, vulnerability disclosures, and CTF walkthroughs from across the web.
+
+Instead of hunting through scattered RSS feeds, Medium blogs, and GitHub repositories, **The Hunter Archive** provides a single unified search engine with 1-click vulnerability filters, bounty badges (`💰 $5,000`), offline bookmarks, and automated markdown citations.
+
+---
+
+## Key Features
+
+- ⚡ **7,490+ Indexed Writeups**: Ingests reports from Pentester.land, Medium, PortSwigger, Google Project Zero, 0xdf, Wiz, Qualys, Unit 42, and GitHub repos.
+- 🎯 **1-Click Vulnerability Filters**: Instant filter chips for `RCE`, `SSRF`, `IDOR`, `XSS`, `OAuth`, `SQLi`, `LFI`, `Account Takeover`, `JWT`, and `Auth Bypass`.
+- 💰 **Bounty Badges & Sort**: Identify high-value vulnerability payouts with dollar badges (`💰 $5,000`) and sort by highest bounty.
+- 🎨 **Clean Vercel/Linear Design System**: Hardware-accelerated 60fps scrolling, high-contrast typography, and full Dark Mode / Light Mode toggle.
+- ⌨ **Keyboard-First Navigation**: `⌘K` Command Palette for quick search and navigation.
+- 📁 **Bookmarks & Read Tracking**: Save reports to local bookmarks and track read status without accounts or login.
+- 🤖 **Automated Daily Scraping**: GitHub Actions cron job (`.github/workflows/scrape.yml`) runs daily to auto-discover new writeups and auto-commit updates.
+- 🚀 **Zero Database Overhead**: Portable local JSON store with OS `/tmp` fallback for seamless serverless execution on Vercel.
+
+---
+
+## Architecture & Data Pipeline
+
+```text
+        ┌──────────────────────────────────────────────────────────┐
+        │                 Automated Ingestion Pipeline             │
+        └────────────────────────────┬─────────────────────────────┘
+                                     │
+       ┌─────────────────────────────┼─────────────────────────────┐
+       ▼                             ▼                             ▼
+┌──────────────┐              ┌──────────────┐              ┌──────────────┐
+│ PentesterLand│              │ Security RSS │              │ GitHub Repos │
+│  JSON API    │              │    Feeds     │              │  Search API  │
+└──────┬───────┘              └──────┬───────┘              └──────┬───────┘
+       │                             │                             │
+       └─────────────────────────────┼─────────────────────────────┘
+                                     │
+                                     ▼
+        ┌──────────────────────────────────────────────────────────┐
+        │             Normalizer & Security Sanitizer              │
+        │          (Deduplication, Tags, Bounty Extraction)        │
+        └────────────────────────────┬─────────────────────────────┘
+                                     │
+                                     ▼
+        ┌──────────────────────────────────────────────────────────┐
+        │         Local JSON Engine / Vercel Serverless Store      │
+        └────────────────────────────┬─────────────────────────────┘
+                                     │
+                                     ▼
+        ┌──────────────────────────────────────────────────────────┐
+        │             Next.js 14 Responsive UI & API               │
+        └──────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Quick Start & Local Setup
+
+### Prerequisites
+
+- **Node.js 18+**
+- **npm** or **pnpm**
+
+### 1. Clone & Install
+
+```bash
+git clone https://github.com/jojin1709/hunter-archive.git
+cd hunter-archive
+npm install
+```
+
+### 2. Configure Environment (Optional)
 
 ```bash
 cp .env.example .env.local
-# GITHUB_TOKEN is optional but recommended for GitHub API rate limits
+# GITHUB_TOKEN is optional but recommended to raise GitHub API rate limits
 ```
 
-A `GITHUB_TOKEN` (classic PAT, no scopes needed) raises the GitHub search
-rate limit from 60/hr to 5,000/hr — worth creating one, it's free.
-
-## 2. Run the scraper once to populate data
+### 3. Run the Scraper (Populate Writeups)
 
 ```bash
-npm install
 npm run scrape
 ```
 
-This pulls from every source in `lib/sources.js` and upserts into
-`data/writeups.json`. Re-running is safe and deduplicates by URL.
-
-Use `npm run scrape:watch` to refresh the local archive every 24 hours. The
-scraper also writes `data/source-status.json` for the source-health panel.
-
-## 3. Run the dashboard locally
+### 4. Launch Local Dev Server
 
 ```bash
 npm run dev
-# open http://localhost:3000
+# Open http://localhost:3000 in your browser
 ```
 
-The dashboard includes Load more pagination, advanced filters, bookmarks,
-JSON/CSV export, JSON import, and a detail page for every writeup.
+---
 
-## 4. Keep it updating automatically (free)
+## Sources & Feed Coverage
 
-The scraper also runs as a scheduled GitHub Action
-(`.github/workflows/scrape.yml`, daily at 03:00 UTC). To enable it:
+| Source | Description | Type |
+| --- | --- | --- |
+| **Pentester.land** | 6,400+ curated bug bounty writeups with bounty amounts | JSON API |
+| **InfoSec Writeups** | Medium's premier security publication | RSS Feed |
+| **PortSwigger Research** | Web security academy & research disclosures | RSS Feed |
+| **Google Project Zero** | 0-day vulnerability research | RSS Feed |
+| **0xdf HackTheBox** | CTF walkthroughs and machine writeups | RSS Feed |
+| **ProjectDiscovery** | Tool releases and exploit analysis | RSS Feed |
+| **Wiz / Qualys / Unit 42** | Enterprise threat intelligence & vulnerability reports | RSS Feed |
+| **GitHub Repositories** | Public writeup collections & security portfolios | GitHub Search API |
 
-1. Push this repo to GitHub
-2. Repo → Settings → Secrets and variables → Actions, add:
-   - `GH_PAT` (your GitHub token, reused for the search API calls)
-3. It'll also show up under the Actions tab so you can trigger a run manually
+---
 
-## 5. Deploy the dashboard (free)
+## Automated Scraping (GitHub Actions)
 
-Push to GitHub, then import the repo at https://vercel.com/new. The local JSON
-store works for local use; hosted deployments need persistent storage if data
-must survive redeploys.
+The scraper runs as an automated GitHub Action (`.github/workflows/scrape.yml`) daily at **03:17 UTC**.
 
-The included GitHub Action refreshes and commits the JSON archive daily. Set
-the `GH_PAT` repository secret before enabling it.
+1. It fetches all RSS feeds, GitHub search queries, and Pentester.land JSON.
+2. It deduplicates entries by URL and updates `data/writeups.json`.
+3. It commits the updated JSON back to GitHub.
+4. Vercel detects the new commit and automatically redeploys your live app!
 
-## Adding more sources
+---
 
-Everything lives in `lib/sources.js`:
+## Deployment on Vercel
 
-- `RSS_FEEDS` — any blog or Medium tag with an RSS/Atom feed. Add a line,
-  done — no other code changes needed.
-- `GITHUB_QUERIES` — GitHub repo-search queries (topics, keywords).
-- `PENTESTERLAND_URL` — HTML scrape target; if Pentester Land redesigns
-  their page, adjust the cheerio selectors in `scripts/scrape.mjs`.
+1. Push your repository to GitHub.
+2. Import your repository at **[https://vercel.com/new](https://vercel.com/new)**.
+3. Keep default settings (**Framework Preset:** Next.js).
+4. Click **Deploy**.
 
-## Notes
+---
 
-- The Pentester Land scraper uses best-effort CSS selectors against their
-  writeups table. If it comes back empty after a site redesign, inspect
-  the page's current markup and adjust the selectors in `scrapePentesterLand()`.
-- The dashboard and scraper share the local JSON store; no database credentials
-  are required for local use.
+## License & Open Source
+
+Licensed under the **MIT License**. Free for personal and commercial use.
+
+<p align="center">
+  <b>Built for Security Researchers & Bug Bounty Hunters</b>
+</p>
