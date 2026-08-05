@@ -53,64 +53,89 @@ export default function WriteupDetailClient({ item, related = [] }) {
   };
 
   return (
-    <main className="detail-page">
-      <Link className="back-link" href="/">
-        ← Back to archive
-      </Link>
+    <main>
+      <div className="app-bg-glow" />
 
-      <div style={{ marginTop: "30px" }}>
-        <span className="eyebrow">
-          {item.source_label || item.source} · {item.platform || "Security Research"}
-        </span>
-        <h1 style={{ marginTop: "12px" }}>{item.title}</h1>
-      </div>
+      {/* Top Navbar */}
+      <nav className="top-nav">
+        <div className="nav-container">
+          <Link className="btn-secondary" href="/">
+            ← Back to Archive
+          </Link>
+          <div className="brand-logo">
+            <span>HUNTER ARCHIVE</span>
+          </div>
+        </div>
+      </nav>
 
-      <div className="detail-meta">
-        <span>Author: {item.author || "Unknown author"}</span>
-        <span>Date: {item.published_at ? new Date(item.published_at).toLocaleDateString("en-IN") : "Undated"}</span>
-        {item.bounty && <span className="bounty-badge">💰 Bounty: {item.bounty}</span>}
-      </div>
+      <div className="detail-container">
+        <article className="detail-card">
+          <div className="detail-meta">
+            <span className="card-source">{item.source_label || item.source || "Security Research"}</span>
+            {item.published_at && (
+              <span>· {new Date(item.published_at).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}</span>
+            )}
+            {item.author && <span>· by {item.author}</span>}
+            {item.bounty && <span className="bounty-pill">💰 Bounty: {item.bounty}</span>}
+          </div>
 
-      <div className="action-bar">
-        <button className="action-btn" onClick={toggleSave}>
-          {saved ? "★ Saved in Bookmarks" : "☆ Save Bookmark"}
-        </button>
-        <button className="action-btn" onClick={toggleRead}>
-          {read ? "✓ Marked as Read" : "○ Mark as Read"}
-        </button>
-        <button className="action-btn" onClick={copyCitation}>
-          {copied ? "✓ Citation Copied!" : "📋 Copy Citation (Markdown)"}
-        </button>
-        {item.url && (
-          <a className="action-btn" href={item.url} target="_blank" rel="noopener noreferrer">
-            Open Original Article ↗
-          </a>
+          <h1 className="detail-title">{item.title}</h1>
+
+          <div className="tool-row" style={{ paddingTop: 0, borderTop: 0, marginBottom: 24 }}>
+            <button className={`btn-secondary ${saved ? "highlight" : ""}`} onClick={toggleSave}>
+              {saved ? "★ Saved in Bookmarks" : "☆ Save Bookmark"}
+            </button>
+            <button className="btn-secondary" onClick={toggleRead}>
+              {read ? "✓ Marked as Read" : "○ Mark as Read"}
+            </button>
+            <button className="btn-secondary" onClick={copyCitation}>
+              {copied ? "✓ Citation Copied!" : "📋 Copy Citation (Markdown)"}
+            </button>
+            {item.url && (
+              <a className="btn-primary" href={item.url} target="_blank" rel="noopener noreferrer">
+                Open Original Article ↗
+              </a>
+            )}
+          </div>
+
+          {item.summary && <div className="detail-summary">{item.summary}</div>}
+
+          {item.tags && item.tags.length > 0 && (
+            <div className="card-tags" style={{ marginTop: 20 }}>
+              {item.tags.map((tag) => (
+                <span className="tag-badge" key={tag}>
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </article>
+
+        {related.length > 0 && (
+          <section className="related-section">
+            <h3 style={{ fontSize: 20, fontWeight: 700, margin: "0 0 16px", color: "var(--text-primary)" }}>
+              More Writeups Like This
+            </h3>
+            <div className="related-grid">
+              {related.map((rel) => (
+                <a key={rel.id} href={`/writeups/${rel.id}`} className="related-card">
+                  <div>
+                    <span className="card-source" style={{ fontSize: 10 }}>{rel.source_label || rel.source}</span>
+                    <h4>{rel.title}</h4>
+                  </div>
+                  <span style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 8 }}>
+                    {rel.author ? `by ${rel.author}` : "Security Research"}
+                  </span>
+                </a>
+              ))}
+            </div>
+          </section>
         )}
       </div>
 
-      {item.summary && <p className="detail-summary">{item.summary}</p>}
-
-      <div className="case-tags">
-        {(item.tags || []).map((tag) => (
-          <span key={tag}>{tag}</span>
-        ))}
-      </div>
-
-      {related.length > 0 && (
-        <section className="related-section">
-          <span className="eyebrow">Related signals</span>
-          <h3 style={{ margin: "6px 0 0", font: "500 24px var(--font-display), Inter, sans-serif" }}>More Writeups Like This</h3>
-          <div className="related-grid">
-            {related.map((rel) => (
-              <a key={rel.id} href={`/writeups/${rel.id}`} className="related-card">
-                <span>{rel.source_label || rel.source}</span>
-                <h4>{rel.title}</h4>
-                <span>{rel.author ? `by ${rel.author}` : "Security Research"}</span>
-              </a>
-            ))}
-          </div>
-        </section>
-      )}
+      <footer>
+        <p>The Hunter Archive — Built for Security Researchers</p>
+      </footer>
     </main>
   );
 }
