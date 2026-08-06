@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-05T17:50:49.520Z",
+  "updatedAt": "2026-08-06T06:04:34.689Z",
   "sources": [
     {
       "label": "infosecwriteups.com",
@@ -28,19 +28,67 @@
     {
       "label": "medium.com/tag/ctf-writeup",
       "ok": true,
-      "count": 8,
+      "count": 7,
       "error": null
     },
     {
       "label": "medium.com/tag/infosec",
       "ok": true,
+      "count": 7,
+      "error": null
+    },
+    {
+      "label": "samcurry.net",
+      "ok": false,
+      "count": 0,
+      "error": "HTTP 404"
+    },
+    {
+      "label": "shubh.am",
+      "ok": true,
+      "count": 15,
+      "error": null
+    },
+    {
+      "label": "brutelogic.com.br",
+      "ok": false,
+      "count": 0,
+      "error": "fetch failed"
+    },
+    {
+      "label": "0xdf.gitlab.io",
+      "ok": true,
+      "count": 50,
+      "error": null
+    },
+    {
+      "label": "bishopfox.com",
+      "ok": true,
+      "count": 50,
+      "error": null
+    },
+    {
+      "label": "rhinosecuritylabs.com",
+      "ok": true,
       "count": 10,
       "error": null
     },
     {
-      "label": "portswigger.net/research",
+      "label": "praetorian.com",
+      "ok": false,
+      "count": 0,
+      "error": "HTTP 404"
+    },
+    {
+      "label": "gosecure.ai",
+      "ok": false,
+      "count": 0,
+      "error": "Attribute without value\nLine: 0\nColumn: 1767\nChar: >"
+    },
+    {
+      "label": "blog.trailofbits.com",
       "ok": true,
-      "count": 40,
+      "count": 20,
       "error": null
     },
     {
@@ -50,15 +98,15 @@
       "error": null
     },
     {
-      "label": "0xdf.gitlab.io",
-      "ok": true,
-      "count": 50,
-      "error": null
-    },
-    {
       "label": "blog.projectdiscovery.io",
       "ok": true,
       "count": 20,
+      "error": null
+    },
+    {
+      "label": "portswigger.net/research",
+      "ok": true,
+      "count": 40,
       "error": null
     },
     {
@@ -74,15 +122,15 @@
       "error": null
     },
     {
-      "label": "blog.trailofbits.com",
-      "ok": true,
-      "count": 20,
-      "error": null
-    },
-    {
       "label": "wiz.io/blog",
       "ok": true,
       "count": 661,
+      "error": null
+    },
+    {
+      "label": "blog.cloudflare.com",
+      "ok": true,
+      "count": 20,
       "error": null
     },
     {
@@ -95,6 +143,72 @@
       "label": "unit42.paloaltonetworks.com",
       "ok": true,
       "count": 15,
+      "error": null
+    },
+    {
+      "label": "securelist.com",
+      "ok": true,
+      "count": 10,
+      "error": null
+    },
+    {
+      "label": "specterops.io",
+      "ok": true,
+      "count": 50,
+      "error": null
+    },
+    {
+      "label": "snyk.io/blog",
+      "ok": true,
+      "count": 1660,
+      "error": null
+    },
+    {
+      "label": "research.checkpoint.com",
+      "ok": true,
+      "count": 15,
+      "error": null
+    },
+    {
+      "label": "blog.crowdstrike.com",
+      "ok": false,
+      "count": 0,
+      "error": "fetch failed"
+    },
+    {
+      "label": "blog.sucuri.net",
+      "ok": true,
+      "count": 11,
+      "error": null
+    },
+    {
+      "label": "thehackernews.com",
+      "ok": true,
+      "count": 50,
+      "error": null
+    },
+    {
+      "label": "bleepingcomputer.com",
+      "ok": true,
+      "count": 15,
+      "error": null
+    },
+    {
+      "label": "portswigger.net/daily-swig",
+      "ok": false,
+      "count": 0,
+      "error": "Invalid character in entity name\nLine: 0\nColumn: 2137\nChar: ="
+    },
+    {
+      "label": "krebsonsecurity.com",
+      "ok": true,
+      "count": 10,
+      "error": null
+    },
+    {
+      "label": "cisa.gov/advisories",
+      "ok": true,
+      "count": 30,
       "error": null
     },
     {
@@ -147,6 +261,18 @@
     },
     {
       "label": "GitHub: awesome bug bounty in:name,description,readme",
+      "ok": true,
+      "count": 25,
+      "error": null
+    },
+    {
+      "label": "GitHub: exploit-poc in:topics",
+      "ok": true,
+      "count": 9,
+      "error": null
+    },
+    {
+      "label": "GitHub: vulnerability-research in:topics",
       "ok": true,
       "count": 25,
       "error": null
