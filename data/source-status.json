@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-07T05:02:05.265Z",
+  "updatedAt": "2026-08-08T04:20:40.639Z",
   "sources": [
     {
       "label": "infosecwriteups.com",
@@ -10,7 +10,7 @@
     {
       "label": "medium.com/tag/bug-bounty",
       "ok": true,
-      "count": 10,
+      "count": 9,
       "error": null
     },
     {
@@ -22,7 +22,7 @@
     {
       "label": "medium.com/tag/penetration-testing",
       "ok": true,
-      "count": 10,
+      "count": 9,
       "error": null
     },
     {
