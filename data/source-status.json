@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-14T05:00:06.616Z",
+  "updatedAt": "2026-08-15T03:52:45.814Z",
   "sources": [
     {
       "label": "infosecwriteups.com",
@@ -28,7 +28,7 @@
     {
       "label": "medium.com/tag/ctf-writeup",
       "ok": true,
-      "count": 8,
+      "count": 10,
       "error": null
     },
     {
@@ -154,7 +154,7 @@
     {
       "label": "wiz.io/blog",
       "ok": true,
-      "count": 666,
+      "count": 668,
       "error": null
     },
     {
@@ -203,7 +203,7 @@
       "label": "hackerone.com",
       "ok": false,
       "count": 0,
-      "error": "HTTP 503"
+      "error": "Unexpected close tag\nLine: 33\nColumn: 7\nChar: >"
     },
     {
       "label": "0x00sec.org",
