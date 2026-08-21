@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-20T03:57:38.075Z",
+  "updatedAt": "2026-08-21T03:59:27.798Z",
   "sources": [
     {
       "label": "infosecwriteups.com",
@@ -10,7 +10,7 @@
     {
       "label": "medium.com/tag/bug-bounty",
       "ok": true,
-      "count": 7,
+      "count": 10,
       "error": null
     },
     {
@@ -34,7 +34,7 @@
     {
       "label": "medium.com/tag/infosec",
       "ok": true,
-      "count": 9,
+      "count": 10,
       "error": null
     },
     {
@@ -154,7 +154,7 @@
     {
       "label": "wiz.io/blog",
       "ok": true,
-      "count": 673,
+      "count": 674,
       "error": null
     },
     {
@@ -190,7 +190,7 @@
     {
       "label": "snyk.io/blog",
       "ok": true,
-      "count": 1663,
+      "count": 1664,
       "error": null
     },
     {
