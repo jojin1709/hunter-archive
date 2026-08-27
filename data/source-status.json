@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-26T04:01:41.465Z",
+  "updatedAt": "2026-08-27T14:09:26.733Z",
   "sources": [
     {
       "label": "infosecwriteups.com",
@@ -154,7 +154,7 @@
     {
       "label": "wiz.io/blog",
       "ok": true,
-      "count": 675,
+      "count": 677,
       "error": null
     },
     {
@@ -190,7 +190,7 @@
     {
       "label": "snyk.io/blog",
       "ok": true,
-      "count": 1662,
+      "count": 1663,
       "error": null
     },
     {
@@ -262,7 +262,7 @@
     {
       "label": "GitHub: security-writeups in:topics",
       "ok": true,
-      "count": 17,
+      "count": 18,
       "error": null
     },
     {
