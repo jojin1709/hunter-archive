@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-30T09:12:03.314Z",
+  "updatedAt": "2026-08-31T09:41:10.850Z",
   "sources": [
     {
       "label": "infosecwriteups.com",
@@ -34,7 +34,7 @@
     {
       "label": "medium.com/tag/infosec",
       "ok": true,
-      "count": 8,
+      "count": 9,
       "error": null
     },
     {
@@ -154,7 +154,7 @@
     {
       "label": "wiz.io/blog",
       "ok": true,
-      "count": 680,
+      "count": 679,
       "error": null
     },
     {
