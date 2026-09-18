@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-17T08:37:27.243Z",
+  "updatedAt": "2026-09-18T08:12:54.203Z",
   "sources": [
     {
       "label": "infosecwriteups.com",
@@ -10,7 +10,7 @@
     {
       "label": "medium.com/tag/bug-bounty",
       "ok": true,
-      "count": 8,
+      "count": 10,
       "error": null
     },
     {
@@ -154,7 +154,7 @@
     {
       "label": "wiz.io/blog",
       "ok": true,
-      "count": 685,
+      "count": 688,
       "error": null
     },
     {
@@ -298,7 +298,7 @@
     {
       "label": "GitHub: exploit-poc in:topics",
       "ok": true,
-      "count": 9,
+      "count": 10,
       "error": null
     },
     {
