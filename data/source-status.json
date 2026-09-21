@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-20T08:32:53.758Z",
+  "updatedAt": "2026-09-21T08:53:37.860Z",
   "sources": [
     {
       "label": "infosecwriteups.com",
@@ -10,19 +10,19 @@
     {
       "label": "medium.com/tag/bug-bounty",
       "ok": true,
-      "count": 10,
+      "count": 9,
       "error": null
     },
     {
       "label": "medium.com/tag/bugbounty-writeup",
       "ok": true,
-      "count": 9,
+      "count": 8,
       "error": null
     },
     {
       "label": "medium.com/tag/penetration-testing",
       "ok": true,
-      "count": 10,
+      "count": 9,
       "error": null
     },
     {
@@ -34,7 +34,7 @@
     {
       "label": "medium.com/tag/infosec",
       "ok": true,
-      "count": 10,
+      "count": 9,
       "error": null
     },
     {
@@ -262,7 +262,7 @@
     {
       "label": "GitHub: security-writeups in:topics",
       "ok": true,
-      "count": 22,
+      "count": 23,
       "error": null
     },
     {
