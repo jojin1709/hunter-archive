@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-23T08:32:22.397Z",
+  "updatedAt": "2026-09-24T08:25:12.902Z",
   "sources": [
     {
       "label": "infosecwriteups.com",
@@ -10,7 +10,7 @@
     {
       "label": "medium.com/tag/bug-bounty",
       "ok": true,
-      "count": 9,
+      "count": 10,
       "error": null
     },
     {
@@ -28,7 +28,7 @@
     {
       "label": "medium.com/tag/ctf-writeup",
       "ok": true,
-      "count": 9,
+      "count": 10,
       "error": null
     },
     {
@@ -190,7 +190,7 @@
     {
       "label": "snyk.io/blog",
       "ok": true,
-      "count": 1666,
+      "count": 1667,
       "error": null
     },
     {
