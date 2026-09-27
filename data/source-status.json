@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-26T08:33:42.409Z",
+  "updatedAt": "2026-09-27T09:13:10.989Z",
   "sources": [
     {
       "label": "infosecwriteups.com",
@@ -16,7 +16,7 @@
     {
       "label": "medium.com/tag/bugbounty-writeup",
       "ok": true,
-      "count": 9,
+      "count": 10,
       "error": null
     },
     {
@@ -34,7 +34,7 @@
     {
       "label": "medium.com/tag/infosec",
       "ok": true,
-      "count": 10,
+      "count": 9,
       "error": null
     },
     {
@@ -262,7 +262,7 @@
     {
       "label": "GitHub: security-writeups in:topics",
       "ok": true,
-      "count": 24,
+      "count": 25,
       "error": null
     },
     {
