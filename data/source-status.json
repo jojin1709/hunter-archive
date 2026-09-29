@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-28T09:42:41.560Z",
+  "updatedAt": "2026-09-29T09:47:00.332Z",
   "sources": [
     {
       "label": "infosecwriteups.com",
@@ -10,7 +10,7 @@
     {
       "label": "medium.com/tag/bug-bounty",
       "ok": true,
-      "count": 9,
+      "count": 10,
       "error": null
     },
     {
