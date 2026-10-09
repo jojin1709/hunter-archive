@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-08T10:31:42.201Z",
+  "updatedAt": "2026-10-09T10:29:55.071Z",
   "sources": [
     {
       "label": "infosecwriteups.com",
@@ -22,7 +22,7 @@
     {
       "label": "medium.com/tag/penetration-testing",
       "ok": true,
-      "count": 10,
+      "count": 9,
       "error": null
     },
     {
@@ -165,9 +165,9 @@
     },
     {
       "label": "blog.qualys.com",
-      "ok": true,
-      "count": 10,
-      "error": null
+      "ok": false,
+      "count": 0,
+      "error": "HTTP 403"
     },
     {
       "label": "unit42.paloaltonetworks.com",
