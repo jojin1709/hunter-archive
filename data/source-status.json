@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-09T10:29:55.071Z",
+  "updatedAt": "2026-10-10T09:47:25.070Z",
   "sources": [
     {
       "label": "infosecwriteups.com",
@@ -22,7 +22,7 @@
     {
       "label": "medium.com/tag/penetration-testing",
       "ok": true,
-      "count": 9,
+      "count": 10,
       "error": null
     },
     {
