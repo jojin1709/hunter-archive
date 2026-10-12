@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-11T09:57:49.481Z",
+  "updatedAt": "2026-10-12T10:44:29.060Z",
   "sources": [
     {
       "label": "infosecwriteups.com",
@@ -22,13 +22,13 @@
     {
       "label": "medium.com/tag/penetration-testing",
       "ok": true,
-      "count": 10,
+      "count": 9,
       "error": null
     },
     {
       "label": "medium.com/tag/ctf-writeup",
       "ok": true,
-      "count": 10,
+      "count": 9,
       "error": null
     },
     {
