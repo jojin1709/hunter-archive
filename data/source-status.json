@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-17T07:45:07.969Z",
+  "updatedAt": "2026-10-18T07:59:37.939Z",
   "sources": [
     {
       "label": "infosecwriteups.com",
@@ -16,7 +16,7 @@
     {
       "label": "medium.com/tag/bugbounty-writeup",
       "ok": true,
-      "count": 9,
+      "count": 10,
       "error": null
     },
     {
@@ -28,7 +28,7 @@
     {
       "label": "medium.com/tag/ctf-writeup",
       "ok": true,
-      "count": 9,
+      "count": 10,
       "error": null
     },
     {
@@ -165,9 +165,9 @@
     },
     {
       "label": "blog.qualys.com",
-      "ok": false,
-      "count": 0,
-      "error": "HTTP 403"
+      "ok": true,
+      "count": 10,
+      "error": null
     },
     {
       "label": "unit42.paloaltonetworks.com",
