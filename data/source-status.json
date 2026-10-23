@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-22T08:33:53.085Z",
+  "updatedAt": "2026-10-23T08:30:02.719Z",
   "sources": [
     {
       "label": "infosecwriteups.com",
@@ -154,7 +154,7 @@
     {
       "label": "wiz.io/blog",
       "ok": true,
-      "count": 705,
+      "count": 707,
       "error": null
     },
     {
@@ -190,7 +190,7 @@
     {
       "label": "snyk.io/blog",
       "ok": true,
-      "count": 1675,
+      "count": 1677,
       "error": null
     },
     {
