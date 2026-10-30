@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-29T09:54:33.331Z",
+  "updatedAt": "2026-10-30T09:57:31.865Z",
   "sources": [
     {
       "label": "infosecwriteups.com",
@@ -10,13 +10,13 @@
     {
       "label": "medium.com/tag/bug-bounty",
       "ok": true,
-      "count": 9,
+      "count": 10,
       "error": null
     },
     {
       "label": "medium.com/tag/bugbounty-writeup",
       "ok": true,
-      "count": 8,
+      "count": 9,
       "error": null
     },
     {
@@ -28,13 +28,13 @@
     {
       "label": "medium.com/tag/ctf-writeup",
       "ok": true,
-      "count": 10,
+      "count": 8,
       "error": null
     },
     {
       "label": "medium.com/tag/infosec",
       "ok": true,
-      "count": 9,
+      "count": 10,
       "error": null
     },
     {
@@ -154,7 +154,7 @@
     {
       "label": "wiz.io/blog",
       "ok": true,
-      "count": 711,
+      "count": 712,
       "error": null
     },
     {
@@ -333,9 +333,9 @@
     },
     {
       "label": "Dev.to: tag=cybersecurity",
-      "ok": true,
-      "count": 30,
-      "error": null
+      "ok": false,
+      "count": 0,
+      "error": "HTTP 429"
     },
     {
       "label": "Dev.to: tag=infosec",
@@ -345,9 +345,9 @@
     },
     {
       "label": "Dev.to: tag=pentesting",
-      "ok": true,
-      "count": 30,
-      "error": null
+      "ok": false,
+      "count": 0,
+      "error": "HTTP 429"
     }
   ]
 }
