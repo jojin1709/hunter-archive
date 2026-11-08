@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-07T10:01:40.867Z",
+  "updatedAt": "2026-11-08T10:15:56.589Z",
   "sources": [
     {
       "label": "infosecwriteups.com",
@@ -209,7 +209,7 @@
       "label": "0x00sec.org",
       "ok": false,
       "count": 0,
-      "error": "HTTP 404"
+      "error": "HTTP 403"
     },
     {
       "label": "offsec.substack.com",
@@ -298,7 +298,7 @@
     {
       "label": "GitHub: exploit-poc in:topics",
       "ok": true,
-      "count": 9,
+      "count": 10,
       "error": null
     },
     {
