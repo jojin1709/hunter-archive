@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-15T10:48:11.234Z",
+  "updatedAt": "2026-11-16T11:09:53.150Z",
   "sources": [
     {
       "label": "infosecwriteups.com",
@@ -327,9 +327,9 @@
     },
     {
       "label": "Dev.to: tag=ctf",
-      "ok": true,
-      "count": 30,
-      "error": null
+      "ok": false,
+      "count": 0,
+      "error": "HTTP 429"
     },
     {
       "label": "Dev.to: tag=cybersecurity",
