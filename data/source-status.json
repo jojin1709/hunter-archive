@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-20T11:31:19.359Z",
+  "updatedAt": "2026-11-21T10:57:02.686Z",
   "sources": [
     {
       "label": "infosecwriteups.com",
@@ -22,7 +22,7 @@
     {
       "label": "medium.com/tag/penetration-testing",
       "ok": true,
-      "count": 9,
+      "count": 10,
       "error": null
     },
     {
@@ -213,9 +213,9 @@
     },
     {
       "label": "offsec.substack.com",
-      "ok": false,
+      "ok": true,
       "count": 0,
-      "error": "HTTP 403"
+      "error": null
     },
     {
       "label": "thehackernews.com",
