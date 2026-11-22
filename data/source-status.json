@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-21T10:57:02.686Z",
+  "updatedAt": "2026-11-22T11:16:35.849Z",
   "sources": [
     {
       "label": "infosecwriteups.com",
@@ -10,7 +10,7 @@
     {
       "label": "medium.com/tag/bug-bounty",
       "ok": true,
-      "count": 9,
+      "count": 10,
       "error": null
     },
     {
@@ -28,7 +28,7 @@
     {
       "label": "medium.com/tag/ctf-writeup",
       "ok": true,
-      "count": 8,
+      "count": 9,
       "error": null
     },
     {
@@ -213,9 +213,9 @@
     },
     {
       "label": "offsec.substack.com",
-      "ok": true,
+      "ok": false,
       "count": 0,
-      "error": null
+      "error": "HTTP 403"
     },
     {
       "label": "thehackernews.com",
