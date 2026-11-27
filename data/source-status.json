@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-26T12:24:46.021Z",
+  "updatedAt": "2026-11-27T12:11:04.235Z",
   "sources": [
     {
       "label": "infosecwriteups.com",
@@ -28,13 +28,13 @@
     {
       "label": "medium.com/tag/ctf-writeup",
       "ok": true,
-      "count": 10,
+      "count": 8,
       "error": null
     },
     {
       "label": "medium.com/tag/infosec",
       "ok": true,
-      "count": 9,
+      "count": 10,
       "error": null
     },
     {
